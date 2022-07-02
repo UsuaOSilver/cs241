@@ -1,0 +1,51 @@
+     1                                 %line 1+1 lower-case.s
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 [section .data]
+     8                                 
+     9 00000000 544845206361742049-    string: db "THE cat IN the HAT", 10
+    10 00000000 4E2074686520484154-
+    11 00000000 0A                 
+    12                                 STRLEN: equ $ - string
+    13                                 
+    14                                 [section .text]
+    15                                 
+    16                                 [global _start]
+    17                                 _start:
+    18                                 
+    19 00000000 48C7C700000000          mov rdi, 0
+    20                                 
+    21                                 start_do:
+    22                                 
+    23 00000007 8A87[00000000]          mov al, byte [string + rdi]
+    24                                 
+    25 0000000D 3C41                    cmp al, 65
+    26 0000000F 7C0A                    jnge end_if
+    27 00000011 3C5A                    cmp al, 90
+    28 00000013 7F06                    jnle end_if
+    29                                 
+    30 00000015 0420                    add al, 32
+    31 00000017 8887[00000000]          mov byte [string + rdi], al
+    32                                 
+    33                                 end_if:
+    34                                 
+    35 0000001D 48FFC7                  inc rdi
+    36 00000020 4883FF13                cmp rdi, STRLEN
+    37 00000024 72DF                    jb start_do
+    38                                 
+    39                                 
+    40 00000026 48C7C001000000          mov rax, 1
+    41 0000002D 48C7C701000000          mov rdi, 1
+    42 00000034 48C7C6[00000000]        mov rsi, string
+    43 0000003B 48BA13000000000000-     mov rdx, STRLEN
+    44 0000003B 00                 
+    45 00000045 0F05                    syscall
+    46                                 
+    47                                 
+    48 00000047 48C7C03C000000          mov rax, 60
+    49 0000004E 48C7C700000000          mov rdi, 0
+    50 00000055 0F05                    syscall
+    51                                 

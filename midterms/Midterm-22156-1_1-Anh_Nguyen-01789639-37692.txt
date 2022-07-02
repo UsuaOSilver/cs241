@@ -1,0 +1,256 @@
+No section
+==========
+
+2756981: Perform the following binary addition: 1011 0100+ 0011
+1111------------[answer] (Your answer should only include the bits of
+the answer, not the carry bit. Do not put any spaces in your answers.
+Write the value of the carry bit, 0 or 1, below.)Carry: [CF]
+
+YOUR ANSWER: 
+0,11110011
+
+SCORE: 5
+NOTES: 
+
+
+2756982: What is the decimal value of 1011 0110 when interpreted as
+two's complement signed?
+
+YOUR ANSWER: 
+-74
+
+SCORE: 5
+NOTES: 
+
+
+2756983: What is the two's complement binary value of -36 as a byte?
+(Do not write any spaces in your answer.)
+
+YOUR ANSWER: 
+11011100
+
+SCORE: 5
+NOTES: 
+
+
+2756984: Perform the binary subtraction   1011 0100- 0011
+1111------------ using twos-complement negation to convert it to an
+addition.
+
+YOUR ANSWER: 
+1011 0100
+
++
+
+ 1100 0001
+
+---------------
+
+0111 0101
+
+SCORE: 5
+NOTES: 
+
+
+2756985: Suppose we want to copy the dword value located at memory
+address addr1 into the memory address addr2. Pick the correct assembly
+code to perform this move.
+
+YOUR ANSWER: 
+mov eax, dword [addr1]mov dword [addr2], eax
+
+SCORE: 5
+NOTES: 
+
+
+2756986: Perform the binary addition 01100110 + 10101011, write the
+final sum, as well as the state of the flags after the addition is
+complete. (Do not write any spaces in the result.)
+
+Result = [Result] CF = [CF] OF = [OF] SF = [SF] ZF = [ZF]
+
+YOUR ANSWER: 
+00010001,1,0,0,0
+
+SCORE: 5
+NOTES: 
+
+
+2756987: For each of the following condition codes, match the
+condition code with the flags it will test.
+
+YOUR ANSWER: 
+g=>ZF == 0 and SF == OF,a=>CF == 0 and ZF == 0,s=>SF == 1,nz=>ZF == 0
+
+SCORE: 5
+NOTES: 
+
+
+2756988: Before calling a function, the stack pointer must be aligned
+to...
+
+YOUR ANSWER: 
+A multiple of 16 plus 8
+
+SCORE: 5
+NOTES: 
+
+
+2756989: When calling C-compatible functions, the first six arguments
+are passed in...
+
+YOUR ANSWER: 
+rdi, rsi, rdx, rcx, r8, r9
+
+SCORE: 5
+NOTES: 
+
+
+2756990: Suppose we execute the following MIPS assembly program: lod
+r2, [addr1]add r1, r3, r4add r5, r1, r2 How many cycles will this
+program take to complete?
+
+YOUR ANSWER: 
+9
+
+SCORE: 5
+NOTES: 
+
+
+2756991: Complete the following syscall-style function so that it will
+print out a parallelogram made of * characters. Do not modify the
+.data section! E.g., if the function's parameter in rdi is 5, it
+should print out ***** *****  *****   *****    ***** This is just an
+example; your function must work correctly for any value in rdi,
+including 0 (prints nothing). section .datanewline: db 10star:    db
+'*'space:   db ' 'section .textprint_stars:; Your code here...
+
+YOUR ANSWER: 
+print_stars:
+    ; r10 = r
+    ; r8 = c
+    ; rdi = 5
+    
+    mov r10, 1
+    
+    .while_print_row:
+        mov r8, 1
+    
+        cmp r10, rdi
+        jg  .end_drawing
+    
+    .while_print_space: 
+        cmp r8, r10
+        jg  .while_print_col
+        call print_space
+        inc r8
+        jmp .while_print_space
+    
+    .while_print_col:
+        cmp r8, rdi
+        setg r8
+        call print_star
+        inc r8
+        jmp .while_print_col
+    
+    call print_nl
+    inc r10
+    jmp .while_print_row    
+    
+
+;;; SYS_EXIT
+    .end_drawing:
+
+        mov rax, 60
+        mov rdi, 0
+        syscall
+
+ 
+
+;;; Functions
+    print_star:
+        mov rax, 1
+        mov rdi, 1
+        mov rsi, star
+        mov rdx, 1
+        syscall
+        ret
+    
+    print_space:
+        mov rax, 1
+        mov rdi, 1
+        mov rsi, " "
+        mov rdx, 1
+        syscall
+        ret
+    
+    print_nl:
+        mov rax, 1
+        mov rdi, 1
+        mov rsi, newline
+        mov rdx, 1
+        syscall
+        ret
+
+SCORE: 25
+NOTES: 
+
+
+2756992: Complete the following function which receives inrdi the
+address of a qword array, and in rsi its length (number of array
+elements) which returns 1 if the array contains a additive sequence
+based on the first two array entries. For example, this array contains
+an additive sequence: {2,5,8,11} because the difference between the
+first two entries (5-2 = 3) is also the difference between the second
+and third (8-5 = 3) and third and fourth (11-8 = 3). This next array
+does not contain an additive sequence, because the difference between
+the first two elements (3-2 = 1) is not continued to later elements
+(5-3 = 2; 1-5 = -4): {2,3,5,1} If the array give contains 2 or fewer
+elements, your function should return 1. It should return 0 if the
+array is not an additive sequence. The array passed to the function
+may be of any length ≥ 0, and your function must work correctly for
+any array. is_additive_seq:; Your code here
+
+YOUR ANSWER: 
+;rdi = array addr.
+;rsi = array length
+
+is_additive_seq:
+
+cmp rsi, 2
+jle .end_loop
+
+mov rdx, byte[rdi]
+sub rdx, byte[rdi + 1] ; rdx = init. difference
+mov rcx, 1 ; rcx = counter
+
+.begin_loop:
+
+mov r8, byte[rdi + rcx]
+sub r8, byte[rdi + rcx + 1] ; r8 = later differences
+
+cmp r8, rdx
+  je .continue_loop
+
+  ; return false
+  mov rax, 0
+    pop rbp
+    ret
+
+.continue_loop:
+  inc rcx
+    jmp .begin_loop
+
+.end_loop:
+  mov rax, 1
+  pop rbp
+ret
+
+SCORE: 20
+NOTES: Note that this is a qword array, so the memory operands should have 
+the form
+
+    qword [rdi + 8 * rcx + 8]
+    
+
+

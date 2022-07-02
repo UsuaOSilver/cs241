@@ -1,0 +1,39 @@
+     1                                 %line 1+1 helloloop10.s
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 [section .data]
+     8                                 
+     9 00000000 48656C6C6F210A         msg: db "Hello!", 10
+    10                                 MSGLEN: equ $ - msg
+    11                                 
+    12                                 SYS_WRITE: equ 1
+    13                                 SYS_EXIT: equ 60
+    14                                 STDOUT: equ 1
+    15                                 
+    16                                 [section .text]
+    17                                 
+    18                                 [global _start]
+    19                                 _start:
+    20                                 
+    21 00000000 48C7C10A000000          mov rcx, 10
+    22                                 
+    23                                 start_loop:
+    24 00000007 48C7C001000000          mov rax, SYS_WRITE
+    25 0000000E 48C7C701000000          mov rdi, STDOUT
+    26 00000015 48C7C6[00000000]        mov rsi, msg
+    27 0000001C 48BA07000000000000-     mov rdx, MSGLEN
+    28 0000001C 00                 
+    29                                 
+    30 00000026 4989CF                  mov r15, rcx
+    31 00000029 0F05                    syscall
+    32 0000002B 4C89F9                  mov rcx, r15
+    33                                 
+    34 0000002E E2D5                    loop start_loop
+    35                                 
+    36 00000030 48C7C03C000000          mov rax, SYS_EXIT
+    37 00000037 48C7C700000000          mov rdi, 0
+    38 0000003E 0F05                    syscall
+    39                                 

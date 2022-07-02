@@ -1,0 +1,118 @@
+     1                                 %line 1+1 proj2.s
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 
+     8                                 [section .data]
+     9                                 
+    10 00000000 0000000000000000       zero: dq 0.0
+    11 00000008 000000000000F03F       one: dq 1.0
+    12 00000010 0000000000000040       two: dq 2.0
+    13 00000018 0000000000001040       four: dq 4.0
+    14 00000020 000000000000F0BF       negone: dq -1.0
+    15 00000028 8DEDB5A0F7C6B03E       limit: dq 0.000001
+    16                                 
+    17 00000030 25660A00               format: db "%f", 10, 0
+    18                                 
+    19                                 [section .text]
+    20                                 
+    21                                 [extern printf]
+    22                                 
+    23                                 [global main]
+    24                                 main:
+    25                                 
+    26 00000000 55                      push rbp
+    27 00000001 4889E5                  mov rbp, rsp
+    28                                 
+    29                                 
+    30 00000004 F20F100425[00000000]      movsd xmm0, qword [limit]
+    31 0000000D E812000000              call compute_pi
+    32                                 
+    33                                 
+    34                                 
+    35 00000012 48C7C7[00000000]        mov rdi, format
+    36 00000019 B001                    mov al, 1
+    37 0000001B E8(F6FFFFFF)            call printf
+    38                                 
+    39 00000020 48C7C000000000          mov rax, 0
+    40 00000027 5D                      pop rbp
+    41 00000028 C3                      ret
+    42                                 
+    43                                 compute_pi:
+    44 00000029 55                      push rbp
+    45 0000002A 4889E5                  mov rbp, rsp
+    46                                 
+    47                                 
+    48                                 
+    49                                 
+    50                                 
+    51                                 
+    52                                 
+    53 0000002D DD0425[00000000]        fld qword[one]
+    54 00000034 DD0425[00000000]        fld qword[two]
+    55 0000003B D8C1                    fadd st1
+    56 0000003D DD5C24F8                fstp qword[rsp-8]
+    57 00000041 DDC0                    ffree st0
+    58                                 
+    59 00000043 488B0425[00000000]      mov rax, qword[one]
+    60 0000004B 48894424E8              mov qword[rsp-24], rax
+    61 00000050 48894424E0              mov qword[rsp-32], rax
+    62 00000055 48894424D8              mov qword[rsp-40], rax
+    63 0000005A 488B0425[00000000]      mov rax, qword[four]
+    64 00000062 48894424F0              mov qword[rsp-16], rax
+    65                                 
+    66 00000067 9BDBE3                  finit
+    67                                 
+    68                                 .begin_loop:
+    69                                 
+    70                                 
+    71 0000006A DD4424E0                fld qword[rsp-32]
+    72 0000006E DD4424F0                fld qword[rsp-16]
+    73 00000072 D8F1                    fdiv st0, st1
+    74 00000074 DD5424D8                fst qword[rsp-40]
+    75                                 
+    76 00000078 DC4424F8                fadd qword[rsp-8]
+    77 0000007C DD5C24F8                fstp qword[rsp-8]
+    78                                 
+    79 00000080 DDC0                    ffree st0
+    80                                 
+    81                                 
+    82 00000082 DD4424F0                fld qword[rsp-16]
+    83 00000086 D9E0                    fchs
+    84 00000088 DD5C24F0                fstp qword[rsp-16]
+    85                                 
+    86                                 
+    87 0000008C DD0425[00000000]        fld qword[one]
+    88 00000093 DD0425[00000000]        fld qword[two]
+    89 0000009A DD4424E8                fld qword[rsp-24]
+    90 0000009E D8C9                    fmul st1
+    91 000000A0 DD5424E0                fst qword[rsp-32]
+    92 000000A4 D8C2                    fadd st2
+    93 000000A6 DC4C24E0                fmul qword[rsp-32]
+    94 000000AA DD5C24E0                fstp qword[rsp-32]
+    95 000000AE DD4424E8                fld qword[rsp-24]
+    96 000000B2 D8C9                    fmul st1
+    97 000000B4 D8C1                    fadd st1
+    98 000000B6 DC4C24E0                fmul qword[rsp-32]
+    99 000000BA DD5C24E0                fstp qword[rsp-32]
+   100                                 
+   101 000000BE DDC0                    ffree st0
+   102 000000C0 DDC1                    ffree st1
+   103                                 
+   104                                 
+   105 000000C2 DD4424D8                fld qword[rsp-40]
+   106 000000C6 D9E1                    fabs
+   107 000000C8 DD0425[00000000]        fld qword[limit]
+   108 000000CF DBE9                    fucomi st1
+   109 000000D1 DDC0                    ffree st0
+   110 000000D3 DDC1                    ffree st1
+   111                                 
+   112 000000D5 7291                    jb .begin_loop
+   113                                 
+   114                                 
+   115 000000D7 F20F104424F8            movsd xmm0, qword[rsp-8]
+   116                                 
+   117 000000DD 5D                      pop rbp
+   118 000000DE C3                      ret

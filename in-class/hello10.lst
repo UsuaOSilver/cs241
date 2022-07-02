@@ -1,0 +1,31 @@
+     1                                 %line 1+1 hello10.s
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 [section .data]
+     8                                 
+     9 00000000 48656C6C6F210A<rept>     msg: times 10 db "Hello!", 10
+    10                                 MSGLEN: equ $ - msg
+    11                                 
+    12                                 SYS_WRITE: equ 1
+    13                                 SYS_EXIT: equ 60
+    14                                 STDOUT: equ 1
+    15                                 
+    16                                 [section .text]
+    17                                 
+    18                                 [global _start]
+    19                                 _start:
+    20                                 
+    21 00000000 48C7C001000000          mov rax, SYS_WRITE
+    22 00000007 48C7C701000000          mov rdi, STDOUT
+    23 0000000E 48C7C6[00000000]        mov rsi, msg
+    24 00000015 48BA46000000000000-     mov rdx, MSGLEN
+    25 00000015 00                 
+    26 0000001F 0F05                    syscall
+    27                                 
+    28 00000021 48C7C03C000000          mov rax, SYS_EXIT
+    29 00000028 48C7C700000000          mov rdi, 0
+    30 0000002F 0F05                    syscall
+    31                                 

@@ -1,0 +1,30 @@
+     1                                 %line 1+1 write_ln_fnc.s
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 [section .data]
+     8                                 
+     9 00000000 0A                     newline: db 10
+    10                                 
+    11                                 [section .text]
+    12                                 
+    13                                 write_ln:
+    14                                 
+    15                                 
+    16                                 
+    17                                 
+    18 00000000 48C7C001000000          mov rax, 1
+    19 00000007 48C7C701000000          mov rdi, 1
+    20 0000000E 4889FE                  mov rsi, rdi
+    21 00000011 4889F2                  mov rdx, rsi
+    22 00000014 0F05                    syscall
+    23                                 
+    24 00000016 48C7C001000000          mov rax, 1
+    25 0000001D 48C7C701000000          mov rdi, 1
+    26 00000024 48C7C6[00000000]        mov rsi, newline
+    27 0000002B 48C7C201000000          mov rdx, 1
+    28 00000032 0F05                    syscall
+    29                                 
+    30 00000034 C3                      ret

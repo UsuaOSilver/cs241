@@ -1,0 +1,25 @@
+     1                                 %line 1+1 proj4_test.s
+     2                                 [global _start]
+     3                                 _start:
+     4                                 
+     5                                 [section .text]
+     6                                 
+     7                                 
+     8                                 
+     9 00000000 48C7C100000000          mov rcx, 0
+    10                                 
+    11                                 .first_loop:
+    12                                 
+    13 00000007 803F00                  cmp byte[rdi], 0
+    14 0000000A 7401                    je .end_first_loop
+    15                                 
+    16 0000000C 48FFC7                  inc rdi
+    17                                 
+    18                                 .end_first_loop:
+    19 0000000F 48FFCF                  dec rdi
+    20                                 
+    21 00000012 F3A4                    rep movsb
+    22 00000014 4889F8                  mov rax, rdi
+    23 00000017 C3                      ret
+    24                                 
+    25                                 

@@ -1,0 +1,83 @@
+     1                                 %line 1+1 proj3.s
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 
+     8                                 
+     9                                 
+    10                                 [section .data]
+    11                                 
+    12 00000000 4A190200               s0: dd 137546
+    13 00000004 D9020000               s1: dd 729
+    14                                 
+    15 00000008 00000000               buffer: dd 0
+    16                                 
+    17                                 [section .text]
+    18                                 
+    19                                 [global _start]
+    20                                 _start:
+    21                                 
+    22 00000000 55                      push rbp
+    23 00000001 4889E5                  mov rbp, rsp
+    24                                 
+    25                                 .loop:
+    26                                 
+    27 00000004 E833000000              call next
+    28 00000009 890425[00000000]        mov dword [buffer], eax
+    29                                 
+    30 00000010 48C7C001000000          mov rax, 1
+    31 00000017 48C7C701000000          mov rdi, 1
+    32 0000001E 48C7C6[00000000]        mov rsi, buffer
+    33 00000025 48C7C204000000          mov rdx, 4
+    34 0000002C 0F05                    syscall
+    35                                 
+    36 0000002E EBD2                    jmp .loop
+    37                                 
+    38 00000030 5D                      pop rbp
+    39                                 
+    40 00000031 48C7C03C000000          mov rax, 60
+    41 00000038 48C7C700000000          mov rdi, 0
+    42 0000003F 0F05                    syscall
+    43                                 
+    44                                 next:
+    45                                 
+    46 00000041 55                      push rbp
+    47 00000042 4889E5                  mov rbp, rsp
+    48                                 
+    49                                 
+    50 00000045 8B3C25[00000000]        mov edi, dword[s0]
+    51 0000004C 8B3425[00000000]        mov esi, dword[s1]
+    52                                 
+    53                                 
+    54 00000053 48BABB79379E0B0000-     mov rdx, 0xb9E3779BB
+    55 00000053 00                 
+    56 0000005D B905000000              mov ecx, 5
+    57                                 
+    58 00000062 89FB                    mov ebx, edi
+    59 00000064 F7E2                    mul edx
+    60 00000066 C1C305                  rol ebx, 5
+    61 00000069 F7E1                    mul ecx
+    62                                 
+    63                                 
+    64 0000006B 678B03                  mov eax, dword[ebx]
+    65                                 
+    66 0000006E 31FE                    xor esi, edi
+    67                                 
+    68 00000070 89FB                    mov ebx, edi
+    69 00000072 C1C31A                  rol ebx, 26
+    70 00000075 31F3                    xor ebx, esi
+    71 00000077 89F2                    mov edx, esi
+    72 00000079 C1E209                  shl edx, 9
+    73 0000007C 31D3                    xor ebx, edx
+    74 0000007E 891C25[00000000]        mov dword[s0], ebx
+    75                                 
+    76 00000085 89F3                    mov ebx, esi
+    77 00000087 C1C30D                  rol ebx, 13
+    78 0000008A 891C25[00000000]        mov dword[s1], ebx
+    79                                 
+    80 00000091 5D                      pop rbp
+    81                                 
+    82                                 
+    83 00000092 C3                      ret

@@ -1,0 +1,31 @@
+     1                                 %line 1+1 test2proj4.s
+     2                                 
+     3                                 [section .text]
+     4                                 
+     5                                 [global _start]
+     6                                 _start:
+     7                                 
+     8                                 
+     9                                 
+    10 00000000 48C7C100000000          mov rcx, 0
+    11                                 
+    12 00000007 F3AE                    rep scasb
+    13                                 
+    14 00000009 48FFCF                  dec rdi
+    15                                 
+    16                                 .loop:
+    17                                 
+    18 0000000C 803F00                  cmp byte[rdi], 0
+    19 0000000F 740D                    je .end_loop
+    20 00000011 803E00                  cmp byte[rsi], 0
+    21 00000014 7408                    je .end_loop
+    22 00000016 4883FA00                cmp rdx, 0
+    23 0000001A 7402                    je .end_loop
+    24                                 
+    25 0000001C A4                      movsb
+    26 0000001D 48FFCA                  dec rdx
+    27                                 
+    28                                 .end_loop:
+    29                                 
+    30 00000020 4889F8                  mov rax, rdi
+    31 00000023 C3                      ret

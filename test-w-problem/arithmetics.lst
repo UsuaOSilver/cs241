@@ -1,0 +1,37 @@
+     1                                 %line 1+1 arithmetics.s
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 
+     8                                 [section .data]
+     9                                 
+    10 00000000 456E74657220317374-    msg1: db "Enter 1st number: "
+    11 00000000 206E756D6265723A20 
+    12                                 MSG1LEN: equ $ - msg1
+    13                                 
+    14 00000012 456E74657220326E64-    msg2: db "Enter 2nd number: "
+    15 00000012 206E756D6265723A20 
+    16                                 MSG2LEN: equ $ - msg2
+    17                                 
+    18                                 [section .text]
+    19                                 
+    20                                 [global _start]
+    21                                 _start:
+    22                                 
+    23                                 
+    24                                 
+    25 00000000 49C7C00A000000          mov r8, 10
+    26 00000007 49C7C102000000          mov r9, 2
+    27                                 
+    28 0000000E 4D0FAFC1                imul r8, r9
+    29 00000012 48C7C203000000          mov rdx, 3
+    30 00000019 48C7C001000000          mov rax, 1
+    31 00000020 48C7C701000000          mov rdi, 1
+    32 00000027 4C89C6                  mov rsi, r8
+    33 0000002A 0F05                    syscall
+    34                                 
+    35 0000002C 48C7C03C000000          mov rax, 60
+    36 00000033 48C7C700000000          mov rdi, 0
+    37 0000003A 0F05                    syscall
